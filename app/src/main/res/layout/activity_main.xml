@@ -10,20 +10,69 @@
     tools:context="com.konstantin.sportapp.MainActivity">
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button"
+        android:layout_width="150sp"
+        android:layout_height="150sp"
+        android:text="Силовые"
+        android:id="@+id/buttonTrain"
+        android:onClick="onClick"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button2"
+        android:layout_width="150sp"
+        android:layout_height="150sp"
+        android:text="Кардио"
+        android:onClick="onClick"
+        android:id="@+id/buttonCardio"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/button"
-        android:layout_toEndOf="@+id/button" />
+        android:layout_toRightOf="@+id/buttonTrain"
+        android:layout_toEndOf="@+id/buttonTrain" />
+    <Button
+        android:layout_width="150sp"
+        android:layout_height="150sp"
+        android:text="Диета"
+        android:onClick="onClick"
+        android:id="@+id/buttonDiet"
+        android:layout_below="@+id/buttonTrain"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="150sp"
+        android:layout_height="150sp"
+        android:text="Фармакология"
+        android:onClick="onClick"
+        android:id="@+id/buttonPharm"
+        android:layout_alignTop="@+id/buttonDiet"
+        android:layout_toRightOf="@+id/buttonDiet"
+        android:layout_toEndOf="@+id/buttonDiet" />
+    <Button
+        android:layout_width="150sp"
+        android:layout_height="150sp"
+        android:text="Фотки"
+        android:onClick="onClick"
+        android:id="@+id/buttonPhoto"
+        android:layout_below="@+id/buttonDiet"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="150sp"
+        android:layout_height="150sp"
+        android:text="Музыка"
+        android:onClick="onClick"
+        android:id="@+id/buttonMusic"
+        android:layout_below="@+id/buttonPharm"
+        android:layout_toRightOf="@+id/buttonDiet"
+        android:layout_toEndOf="@+id/buttonDiet" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Настройки"
+        android:onClick="onClick"
+        android:id="@+id/buttonSettings"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
