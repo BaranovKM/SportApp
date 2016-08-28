@@ -14,14 +14,16 @@ public class DBHelper extends SQLiteOpenHelper implements BaseColumns {
     /*
     Вспомогательный класс для работы с SQLite
      */
+    //TODO сделать запрос к базе асинхронным (aSyncTask)
     public static final String DATABASE_NAME = "db_for_sport_app"; //имя базы данных
     public static final int DATABASE_VERSION = 1; //версия базы данных
 
-    public static final String DATABASE_TABLE_TRAIN = "train"; //таблица для силовых тренировок(упражнения, подходы/повторения, статистика и пр.)
-
-    public static final String GYMNASTIC_NAME_COLUMN = "gymnastic_name"; //столбец для названия упражнения
-    public static final String ROWS_COUNT_COLUMN = "rows"; //столбец для количества кругов/подходов
-    public static final String ITERATIONS_COUNT_COLUMN = "iterations"; //столбец для подсчета повторение
+    public static final String DATABASE_TABLE_TRAINING = "training"; //таблица для силовых тренировок(упражнения, подходы/повторения, статистика и пр.)
+    public static final String GYMNASTIC_NAME_COLUMN = "gymnastic_name"; // названия упражнений
+    public static final String ROWS_PER_TRAINING_COLUMN = "rows_per_training"; // количество кругов/подходов за одну тренировку
+    public static final String ROWS_AMOUNT_COLUMN = "rows_amount"; //общее количество кругов/подходов
+    public static final String ITERATIONS_PER_TRAINING_COLUMN = "iterations_per_training"; // подсчет повторение за тренировку
+    public static final String ITERATIONS_AMOUNT_COLUMN = "iterations_amount"; //общее количество повторение
 
     DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -41,13 +43,15 @@ public class DBHelper extends SQLiteOpenHelper implements BaseColumns {
 
         //на будущее : лучше сперва написать сам скрипт для создание таблицы, и лишь потом вставлять в негоконстанты
         sqLiteDatabase.execSQL("CREATE TABLE "
-        +DATABASE_TABLE_TRAIN
-        +" ("+BaseColumns._ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "
-        +GYMNASTIC_NAME_COLUMN+" TEXT NOT NULL, "
-        +ROWS_COUNT_COLUMN+" INTEGER, "
-        +ITERATIONS_COUNT_COLUMN+" INTEGER);");
-//отслеживание создание таблицы
-        Log.d("Log","---TABLE CREATED---");
+                + DATABASE_TABLE_TRAINING
+                + " (" + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + GYMNASTIC_NAME_COLUMN + " TEXT NOT NULL, "
+                + ROWS_PER_TRAINING_COLUMN + " INTEGER, "
+                + ROWS_AMOUNT_COLUMN + " INTEGER, "
+                + ITERATIONS_PER_TRAINING_COLUMN + " INTEGER, "
+                + ITERATIONS_AMOUNT_COLUMN + " INTEGER);");
+        //отслеживание создание таблицы
+        Log.d("Log", "---TABLE CREATED---");
 
     }
 

@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.buttonDiet:
 //TODO сделать раздел для диеты
-
+//придумать кнопку для добавления внесистемной еды/перекусов
                 break;
             case R.id.buttonPharm:
 //TODO сделать раздел для витаминок и допинга
