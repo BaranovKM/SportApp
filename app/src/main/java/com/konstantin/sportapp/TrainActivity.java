@@ -1,5 +1,6 @@
 package com.konstantin.sportapp;
 
+import android.app.Fragment;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,7 +9,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-//TODO придумать редактор тренировок
+//TODO придумать редактор тренировок(пример добавления записей в бд из текста в textView : андроид1,видео8 40 минута)
+//TODO в редакторе упражнений сделать для полей хинты и подсказки : https://youtu.be/egKox1-6cEk?list=PLyfVjOYzujugEUT-7gYhONqB5Y1xszpCq
+
 //TODO Сделать кнопку для ручного добавления повторений в последнем подходе(например как выбор даты)
 //TODO Сделать кнопки для старта и окончания тренировки
 //TODO После завершения тренировки отображать статистику(подходы/повторения за тренировку и общее кол.во и за все время)
@@ -28,63 +31,35 @@ public class TrainActivity extends AppCompatActivity {
         dbHelper = new DBHelper(this);
         sqLiteDatabase = dbHelper.getWritableDatabase();
 
-        //вставка новой записи в БД
-//        dbHelper = new DBHelper(this, DBHelper.DATABASE_TABLE_TRAINING, null, 1);//непонятно почему, вместо имени базы нужно передавать имя таблицы
-//        sqLiteDatabase = dbHelper.getWritableDatabase();
-//        ContentValues values = new ContentValues();
-//        values.put(DBHelper.GYMNASTIC_NAME_COLUMN, "Подтягивания");
-//        values.put(DBHelper.ROWS_PER_TRAIN_COLUMN, 5);
-//        values.put(DBHelper.ITERATIONS_COUNT_COLUMN, 6);
-//        sqLiteDatabase.insert(DBHelper.DATABASE_TABLE_TRAINING,null,values);
-//TODO Создать прокручиваемый список упражнений с добавляющимися кнопками по количеству подходов
-//TODO для обучения можно использовать ListView, но потом лучше перейти на ListFragment какболее современный
         //создается список упражнения с кол.вом подходов
+        //TODO Cursor оказывается устарел еще 2 года назад. Изучить CursorLoader и переделать считывание из БД
         cursor = sqLiteDatabase.query(DBHelper.DATABASE_TABLE_TRAINING, new String[]{
                         DBHelper.GYMNASTIC_NAME_COLUMN,
 //                        DBHelper.ROWS_PER_TRAIN_COLUMN,
                         DBHelper.ROWS_PER_TRAINING_COLUMN},
                 null, null, null, null, null);
         cursor.moveToFirst();
-        TextView gymnasticName = (TextView) findViewById(R.id.gymnasticName);
-        gymnasticName.setText(cursor.getString(cursor.getColumnIndex(DBHelper.GYMNASTIC_NAME_COLUMN)));
-
-        //show rows
-        testView = (TextView) findViewById(R.id.testView);
-        testView.setText(cursor.getString(cursor.getColumnIndex(DBHelper.ROWS_PER_TRAINING_COLUMN)));
-
+//        TextView gymnasticName = (TextView) findViewById(R.id.gymnasticName);
+//        gymnasticName.setText(cursor.getString(cursor.getColumnIndex(DBHelper.GYMNASTIC_NAME_COLUMN)));
         cursor.close();
-    }
+//TODO 1) сделать заполнение фрагмента из бд 2) сделать выведение нескольких фрагментов с разными записями
 
+    }
+//TODO разобраться как передавать нужный текст/данные во фрагмент
     public void onClick(View view) {
+        Log.d("log", "PUSH BUTTON");
+        String someText = new String("Some text from Activity");
+
+        Exercises exercise = Exercises.newInstance(someText);
+        getFragmentManager().beginTransaction().add(R.id.fragmentContainer, exercise).commit();
+//TODO попробовать передачу аргументов и интерфесы
         //вставка нового упражнения
 //        contentValues = new ContentValues();
 //        contentValues.put(DBHelper.GYMNASTIC_NAME_COLUMN, "Отжимания");
 //        contentValues.put(DBHelper.ROWS_PER_TRAINING_COLUMN, 5);
 //        contentValues.put(DBHelper.ITERATIONS_PER_TRAINING_COLUMN, 15);
 //        sqLiteDatabase.insert(DBHelper.DATABASE_TABLE_TRAINING,null,contentValues);
-//        Log.d("log", "PUSH GYM");
+        Log.d("log", "PUSH GYM");
 
-
-        //Log.d("log", "BUTTON PRESSED");
-//        cursor = sqLiteDatabase.query(DBHelper.DATABASE_TABLE_TRAINING, new String[]{
-//                       DBHelper.GYMNASTIC_NAME_COLUMN,
-//                        DBHelper.ROWS_PER_TRAIN_COLUMN,
-//                        DBHelper.ITERATIONS_COUNT_COLUMN},
-//                null, null, null, null, null);
-//        cursor.moveToFirst();
-//        contentValues = new ContentValues();
-//        int i;
-//        i = cursor.getInt(cursor.getColumnIndex(DBHelper.ITERATIONS_COUNT_COLUMN));
-//        i = i + 5;
-//        contentValues.put(DBHelper.ITERATIONS_COUNT_COLUMN, i);
-//        int updCount = sqLiteDatabase.update(
-//                DBHelper.DATABASE_TABLE_TRAINING,
-//                contentValues,
-//                DBHelper.GYMNASTIC_NAME_COLUMN + " = ?",
-//                new String[]{"Подтягивания"});
-//        Log.d("LOG", "UPDATED ROWS : " + updCount);
-//        testView = (TextView) findViewById(R.id.testView);
-//        testView.setText(Integer.toString(i));
-//        cursor.close();
     }
 }

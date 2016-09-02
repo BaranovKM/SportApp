@@ -40,7 +40,7 @@ public class DBHelper extends SQLiteOpenHelper implements BaseColumns {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         //в бд создаются таблицы для активити
-
+//TODO переделать создание таблицы : можно обойтись без BaseColumns._ID
         //на будущее : лучше сперва написать сам скрипт для создание таблицы, и лишь потом вставлять в негоконстанты
         sqLiteDatabase.execSQL("CREATE TABLE "
                 + DATABASE_TABLE_TRAINING
