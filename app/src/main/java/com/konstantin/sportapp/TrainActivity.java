@@ -39,19 +39,22 @@ public class TrainActivity extends AppCompatActivity {
                         DBHelper.ROWS_PER_TRAINING_COLUMN},
                 null, null, null, null, null);
         cursor.moveToFirst();
+//Данные из базы передаются во фрагмент
+        Exercises exercise = Exercises.newInstance(
+                cursor.getString(cursor.getColumnIndex(DBHelper.GYMNASTIC_NAME_COLUMN)),
+                cursor.getInt(cursor.getColumnIndex(DBHelper.ROWS_PER_TRAINING_COLUMN))
+        );
+        getFragmentManager().beginTransaction().add(R.id.fragmentContainer, exercise).commit();
+
 //        TextView gymnasticName = (TextView) findViewById(R.id.gymnasticName);
 //        gymnasticName.setText(cursor.getString(cursor.getColumnIndex(DBHelper.GYMNASTIC_NAME_COLUMN)));
         cursor.close();
 //TODO 1) сделать заполнение фрагмента из бд 2) сделать выведение нескольких фрагментов с разными записями
 
     }
-//TODO разобраться как передавать нужный текст/данные во фрагмент
     public void onClick(View view) {
         Log.d("log", "PUSH BUTTON");
-        String someText = new String("Some text from Activity");
 
-        Exercises exercise = Exercises.newInstance(someText);
-        getFragmentManager().beginTransaction().add(R.id.fragmentContainer, exercise).commit();
 //TODO попробовать передачу аргументов и интерфесы
         //вставка нового упражнения
 //        contentValues = new ContentValues();
@@ -59,7 +62,7 @@ public class TrainActivity extends AppCompatActivity {
 //        contentValues.put(DBHelper.ROWS_PER_TRAINING_COLUMN, 5);
 //        contentValues.put(DBHelper.ITERATIONS_PER_TRAINING_COLUMN, 15);
 //        sqLiteDatabase.insert(DBHelper.DATABASE_TABLE_TRAINING,null,contentValues);
-        Log.d("log", "PUSH GYM");
+//        Log.d("log", "PUSH GYM");
 
     }
 }
