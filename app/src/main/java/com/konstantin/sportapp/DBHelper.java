@@ -25,6 +25,10 @@ public class DBHelper extends SQLiteOpenHelper implements BaseColumns {
     public static final String ITERATIONS_PER_TRAINING_COLUMN = "iterations_per_training"; // подсчет повторение за тренировку
     public static final String ITERATIONS_AMOUNT_COLUMN = "iterations_amount"; //общее количество повторение
 
+
+    private DBHelper dbHelper;
+    private SQLiteDatabase sqLiteDatabase;
+
     DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -36,7 +40,6 @@ public class DBHelper extends SQLiteOpenHelper implements BaseColumns {
     public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
         super(context, name, factory, version, errorHandler);
     }
-
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         //в бд создаются таблицы для активити
@@ -60,4 +63,21 @@ public class DBHelper extends SQLiteOpenHelper implements BaseColumns {
 
     }
 
+    /*
+    Методы для работы с базой
+     */
+
+    // загрузка упражнений из бд при запуске TrainActivity(при начале тренировки)
+    // передает во фрагменты данные, необходимые для создания списка упражнений
+    public void loadExercisesDataForStartTrain(){
+        String[] exerciseData;
+
+//        return exerciseData;
+    }
+
+    //создание нового подключения
+    public void open(Context context){
+        dbHelper = new DBHelper(context);
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+    }
 }

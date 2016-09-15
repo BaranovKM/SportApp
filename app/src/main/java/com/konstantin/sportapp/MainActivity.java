@@ -8,6 +8,7 @@ import android.view.View;
 public class MainActivity extends AppCompatActivity {
     //TODO найти/сделать иконки для кнопок(гантель для кнопки силовых, сердце для кнопки кардио и т.д.)
     //TODO попробовать эмуляцию через genymotion
+    //TODO сделать перелистывание между разделами методом ViewPager
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
