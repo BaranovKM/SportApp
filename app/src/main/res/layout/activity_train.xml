@@ -9,26 +9,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.konstantin.sportapp.TrainActivity">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test Button"
-        android:onClick="onClick"
-        android:id="@+id/buttonTest"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Count"
-        android:id="@+id/testView"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
-    <FrameLayout
+    <fragment
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/fragmentContainer"></FrameLayout>
+        android:id="@+id/listFragment"
+        android:name="com.konstantin.sportapp.ListFragmentForExercises"></fragment>
 </RelativeLayout>

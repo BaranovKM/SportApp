@@ -1,5 +1,6 @@
 package com.konstantin.sportapp;
 
+import android.app.FragmentManager;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.Loader;
@@ -8,7 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 //TODO придумать редактор тренировок(пример добавления записей в бд из текста в textView : андроид1,видео8 40 минута)
 //TODO в редакторе упражнений сделать для полей хинты и подсказки : https://youtu.be/egKox1-6cEk?list=PLyfVjOYzujugEUT-7gYhONqB5Y1xszpCq
 //TODO сделать майнд-мап для приложения
@@ -25,26 +33,46 @@ public class TrainActivity extends AppCompatActivity implements LoaderManager.Lo
     private String test1;
     private int test2;
 
+    //тестовые переменные для ListFragment
+    //private ArrayAdapter<Exercises> arrayAdapter;
+    //private ArrayList<Exercises> listItems;
+    private BaseAdapter baseAdapter;
+    private List<Exercises> listItems;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_train);
-        createTraining();//выводится список упражнений для тренировки
+        // testTraining();//тест добавления упражнений для тренировки
+  //      createListFragmentWithExercises();//еще один тест с добавленим списка из нескольких фрагментов
     }
 
-    private void createTraining() {
-//TODO сделать заполнение фрагмента из бд 2) сделать выведение нескольких фрагментов с разными записями
+//    private void createListFragmentWithExercises() {
+//
+//        FragmentManager fragmentManager = getFragmentManager();
+//        ListFragmentForExercises listFragmentForExercises = (ListFragmentForExercises) fragmentManager.findFragmentById(R.id.listFragment);
+//        listItems = new ArrayList<Exercises>();
+//
+//        listItems.add(Exercises.newInstance("Test1",1));
+//        listItems.add(Exercises.newInstance("Test2",2));
+//        listItems.add(Exercises.newInstance("Test3",3));
+//
+//        //arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,listItems);
+////        listFragmentForExercises.setListAdapter(arrayAdapter);
+//    }
 
-       test1 ="Name";
+    private void testTraining() {
+//TODO сделать заполнение фрагмента из бд 2) сделать выведение нескольких фрагментов с разными записями
+        test1 = "Name";
         for (int i = 0; i < 3; i++) {
             test2 = i;
-
 
             Exercises exercise = Exercises.newInstance(
                     test1,
                     test2
             );
-            getFragmentManager().beginTransaction().add(R.id.fragmentContainer, exercise).commit();
+           // getFragmentManager().beginTransaction().add(R.id.fragmentContainer, exercise).commit();
         }
     }
 
@@ -53,8 +81,8 @@ public class TrainActivity extends AppCompatActivity implements LoaderManager.Lo
 //        getLoaderManager().initLoader(2, null, this);
 //        getLoaderManager().getLoader(2).forceLoad();
 
-        TextView testView = (TextView) findViewById(R.id.testView);
-        testView.setText(test1);
+//        TextView testView = (TextView) findViewById(R.id.testView);
+//        testView.setText(test1);
         //вставка нового упражнения
 //        contentValues = new ContentValues();
 //        contentValues.put(DBHelper.GYMNASTIC_NAME_COLUMN, "Отжимания");
