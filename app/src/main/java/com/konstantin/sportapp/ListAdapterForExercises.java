@@ -55,7 +55,6 @@ public class ListAdapterForExercises  extends BaseAdapter {
         }
         TextView textView = (TextView) convertView.findViewById(R.id.fragmentTextView);
         textView.setText(getItem(position).toString());
-
         return convertView;
     }
 }

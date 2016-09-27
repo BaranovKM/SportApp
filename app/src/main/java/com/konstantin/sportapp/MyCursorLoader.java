@@ -3,8 +3,10 @@ package com.konstantin.sportapp;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.icu.util.TimeUnit;
 import android.net.Uri;
+import android.provider.BaseColumns;
 import android.util.Log;
 
 /**
@@ -26,18 +28,23 @@ public class MyCursorLoader extends CursorLoader{
 
     @Override
     public Cursor loadInBackground() {
-        Log.d("log", "LOADER START");
+        Log.d("TEST_LOG", "LOADER START");
         //имитация задержки при обращении к бд
 //        try {
-//            java.util.concurrent.TimeUnit.SECONDS.sleep(5);
+//            java.util.concurrent.TimeUnit.SECONDS.sleep(3);
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
-        Cursor cursor = new DBHelper(super.getContext()).getWritableDatabase().query(DBHelper.DATABASE_TABLE_TRAINING, new String[]{
-                        DBHelper.GYMNASTIC_NAME_COLUMN,
-                        DBHelper.ROWS_PER_TRAINING_COLUMN},
-                null, null, null, null, null);
-        cursor.moveToFirst();
-        return cursor;
+
+//        Cursor cursor = new DBHelper(super.getContext()).getWritableDatabase().query(DBHelper.DATABASE_TABLE_TRAINING,
+//                new String[]{
+//                        BaseColumns._ID,
+//                        DBHelper.GYMNASTIC_NAME_COLUMN,
+//                        DBHelper.ROWS_PER_TRAINING_COLUMN},
+//                null, null, null, null, null);
+//        cursor.moveToFirst();
+        //переделаный запрос к бд
+        return new DBHelper(getContext()).getWritableDatabase()
+                .query(DBHelper.DATABASE_TABLE_TRAINING, null,null,null,null,null,null);
     }
 }

@@ -22,89 +22,38 @@ import java.util.List;
 //TODO сделать майнд-мап для приложения
 //TODO Сделать кнопку для ручного добавления повторений в последнем подходе(например как выбор даты)
 //TODO Сделать кнопки для старта и окончания тренировки
+//TODO добавить быстрое управление медиа-плэйером(смена треков и т.д.)
+
 //TODO После завершения тренировки отображать статистику(подходы/повторения за тренировку и общее кол.во и за все время)
 public class TrainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private ContentValues contentValues;
-    private Cursor cursor;
-    private TextView testView;
-
     //тестовые переменные для CursorLoader
     private String test1;
-    private int test2;
-
-    //тестовые переменные для ListFragment
-    //private ArrayAdapter<Exercises> arrayAdapter;
-    //private ArrayList<Exercises> listItems;
-    private BaseAdapter baseAdapter;
-    private List<Exercises> listItems;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_train);
-        // testTraining();//тест добавления упражнений для тренировки
-  //      createListFragmentWithExercises();//еще один тест с добавленим списка из нескольких фрагментов
-    }
-
-//    private void createListFragmentWithExercises() {
-//
-//        FragmentManager fragmentManager = getFragmentManager();
-//        ListFragmentForExercises listFragmentForExercises = (ListFragmentForExercises) fragmentManager.findFragmentById(R.id.listFragment);
-//        listItems = new ArrayList<Exercises>();
-//
-//        listItems.add(Exercises.newInstance("Test1",1));
-//        listItems.add(Exercises.newInstance("Test2",2));
-//        listItems.add(Exercises.newInstance("Test3",3));
-//
-//        //arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,listItems);
-////        listFragmentForExercises.setListAdapter(arrayAdapter);
-//    }
-
-    private void testTraining() {
-//TODO сделать заполнение фрагмента из бд 2) сделать выведение нескольких фрагментов с разными записями
-        test1 = "Name";
-        for (int i = 0; i < 3; i++) {
-            test2 = i;
-
-            Exercises exercise = Exercises.newInstance(
-                    test1,
-                    test2
-            );
-           // getFragmentManager().beginTransaction().add(R.id.fragmentContainer, exercise).commit();
-        }
     }
 
     public void onClick(View view) {
-        Log.d("log", "PUSH BUTTON");
-//        getLoaderManager().initLoader(2, null, this);
-//        getLoaderManager().getLoader(2).forceLoad();
-
-//        TextView testView = (TextView) findViewById(R.id.testView);
-//        testView.setText(test1);
-        //вставка нового упражнения
-//        contentValues = new ContentValues();
-//        contentValues.put(DBHelper.GYMNASTIC_NAME_COLUMN, "Отжимания");
-//        contentValues.put(DBHelper.ROWS_PER_TRAINING_COLUMN, 5);
-//        contentValues.put(DBHelper.ITERATIONS_PER_TRAINING_COLUMN, 15);
-//        sqLiteDatabase.insert(DBHelper.DATABASE_TABLE_TRAINING,null,contentValues);
-//        Log.d("log", "PUSH GYM");
+        Log.d("TEST_LOG", "PUSH BUTTON");
 
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Loader<Cursor> loader = new MyCursorLoader(this);
-        Log.d("log", "Loader create in activity");
+        Log.d("TEST_LOG", "Loader create in activity");
         return loader;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+//TODO удалить неиспользующиеся лоадеры
         Log.d("TEST_LOG", "Loader return result");
-        test1 = cursor.getString(cursor.getColumnIndex(DBHelper.GYMNASTIC_NAME_COLUMN));
-        test2 = cursor.getInt(cursor.getColumnIndex(DBHelper.ROWS_PER_TRAINING_COLUMN));
+//        test1 = cursor.getString(cursor.getColumnIndex(DBHelper.GYMNASTIC_NAME_COLUMN));
 
     }
 
