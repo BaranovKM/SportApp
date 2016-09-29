@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.buttonCardio:
 //TODO сделать раздел для кардио тренировок
+                //пока что ExpandableListview заполняется из таблицы тренировок
+                startActivity(new Intent(this, ActivityWithELV.class));
                 break;
             case R.id.buttonDiet:
 //TODO сделать раздел для диеты

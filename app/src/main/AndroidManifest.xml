@@ -17,8 +17,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TrainActivity"
-            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".TrainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Cardio"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ActivityWithELV"></activity>
     </application>
 
 </manifest>
