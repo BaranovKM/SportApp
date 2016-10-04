@@ -23,7 +23,8 @@
         <activity
             android:name=".Cardio"
             android:screenOrientation="portrait" />
-        <activity android:name=".ActivityWithELV"></activity>
+        <activity android:name=".ActivityWithELV" />
+        <activity android:name=".EditorActivity"></activity>
     </application>
 
 </manifest>

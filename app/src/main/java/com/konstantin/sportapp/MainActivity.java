@@ -57,14 +57,18 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.buttonSettings:
                 //заполнение базы данных (вставка нового упражнения)
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(DBHelper.GYMNASTIC_NAME_COLUMN, "Пресс");
-                contentValues.put(DBHelper.ROWS_PER_TRAINING_COLUMN, 1);
-                contentValues.put(DBHelper.ITERATIONS_PER_TRAINING_COLUMN, 60);
+//                ContentValues contentValues = new ContentValues();
+//                contentValues.put(DBHelper.GYMNASTIC_NAME_COLUMN, "Пресс");
+//                contentValues.put(DBHelper.ROWS_PER_TRAINING_COLUMN, 1);
+//                contentValues.put(DBHelper.ITERATIONS_PER_TRAINING_COLUMN, 60);
 
 //                sqLiteDatabase.insert(DBHelper.DATABASE_TABLE_TRAINING, null, contentValues);
-                new DBHelper(this).getWritableDatabase().insert(DBHelper.DATABASE_TABLE_TRAINING, null, contentValues);
-                Log.d("TEST_LOG", "Упражнение добавлено");
+//                new DBHelper(this).getWritableDatabase().insert(DBHelper.DATABASE_TABLE_TRAINING, null, contentValues);
+//                Log.d("TEST_LOG", "Упражнение добавлено");
+
+
+                //вызов новой активности со списком тренировок
+                startActivity(new Intent(this, EditorActivity.class));
                 break;
         }
     }

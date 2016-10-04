@@ -42,7 +42,7 @@ public class ActivityWithELV extends AppCompatActivity {
 //        for (int i = 0; i < exerciseRows; i++) {
 //        }
 //        listDataChild.put(listDataHeader.get(0), rows);
-
+//TODO вынести все это в лоадер
         Cursor cursor = new DBHelper(this).getWritableDatabase()
                 .query(DBHelper.DATABASE_TABLE_TRAINING, null, null, null, null, null, null);
         cursor.moveToFirst();

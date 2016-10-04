@@ -7,11 +7,10 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.konstantin.sportapp.TrainActivity">
+    tools:context="com.konstantin.sportapp.EditorActivity">
 
-    <fragment
+    <FrameLayout
+        android:id="@+id/container_for_fragments"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/listFragment"
-        android:name="com.konstantin.sportapp.ListFragmentForEditor"></fragment>
+        android:layout_height="wrap_content"></FrameLayout>
 </RelativeLayout>

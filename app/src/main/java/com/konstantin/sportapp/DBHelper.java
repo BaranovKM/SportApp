@@ -14,11 +14,14 @@ public class DBHelper extends SQLiteOpenHelper implements BaseColumns {
     /*
     Вспомогательный класс для работы с SQLite
      */
-    //TODO сделать запрос к базе асинхронным (aSyncTask)
     public static final String DATABASE_NAME = "db_for_sport_app"; //имя базы данных
     public static final int DATABASE_VERSION = 1; //версия базы данных
 
-    public static final String DATABASE_TABLE_TRAINING = "training"; //таблица для силовых тренировок(упражнения, подходы/повторения, статистика и пр.)
+    public static final String DATABASE_TABLE_TRAINING = "training"; //(устарело)таблица для силовых тренировок(упражнения, подходы/повторения, статистика и пр.)
+
+
+    public static final String DATABASE_TABLE_WORKOUTS = "training"; //(устарело)таблица для силовых тренировок(упражнения, подходы/повторения, статистика и пр.)
+
     public static final String GYMNASTIC_NAME_COLUMN = "gymnastic_name"; // названия упражнений
     public static final String ROWS_PER_TRAINING_COLUMN = "rows_per_training"; // количество кругов/подходов за одну тренировку
     public static final String ROWS_AMOUNT_COLUMN = "rows_amount"; //общее количество кругов/подходов
@@ -36,11 +39,11 @@ public class DBHelper extends SQLiteOpenHelper implements BaseColumns {
     public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
         super(context, name, factory, version, errorHandler);
     }
+
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         //в бд создаются таблицы для активити
 //TODO переделать создание таблицы : можно обойтись без BaseColumns._ID
-        //на будущее : лучше сперва написать сам скрипт для создание таблицы, и лишь потом вставлять в негоконстанты
         sqLiteDatabase.execSQL("CREATE TABLE "
                 + DATABASE_TABLE_TRAINING
                 + " (" + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -50,7 +53,7 @@ public class DBHelper extends SQLiteOpenHelper implements BaseColumns {
                 + ITERATIONS_PER_TRAINING_COLUMN + " INTEGER, "
                 + ITERATIONS_AMOUNT_COLUMN + " INTEGER);");
         //отслеживание создание таблицы
-        Log.d("Log", "---TABLE CREATED---");
+        Log.d("TEST_SQL", "---TABLE CREATED---");
 
     }
 
@@ -62,6 +65,9 @@ public class DBHelper extends SQLiteOpenHelper implements BaseColumns {
     /*
     Методы для работы с базой
      */
+    public void prepareTables() {
+    //создание нескольких дефолтных тренировок, для быстрого заполнения пустой дб
 
+    }
 
 }
