@@ -15,6 +15,11 @@ public class EditorFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //return super.onCreateView(inflater, container, savedInstanceState);
+
         return inflater.inflate(R.layout.editor_fragment,container,false);
     }
+    //TODO 1)Реализовать создание тренировки с нуля(заполнение полей и вставку в бд)
+    //TODO 2)Реализовать добавление отдельных упражнений
+    //TODO 3) Реализовать редактирование уже имеющейся тренировки(можно использовать переключатель swich)
+
 }

@@ -5,12 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ExpandableListView;
-import android.widget.SimpleExpandableListAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ActivityWithELV extends AppCompatActivity {
 
@@ -24,6 +22,7 @@ public class ActivityWithELV extends AppCompatActivity {
         List<String> listDataHeader = new ArrayList<>();
         HashMap<String, List<String>> listDataChild = new HashMap<String, List<String>>();
         List<String> rows;
+//TODO добавить прогресс-бар показывающий выполнение тренировки
 
         //настройка автоматического заполнения адаптера по данным из бд
 //        String[] exercisesNames = {"Подтягивания", "Пресс", "Отжимания"};
@@ -44,17 +43,17 @@ public class ActivityWithELV extends AppCompatActivity {
 //        listDataChild.put(listDataHeader.get(0), rows);
 //TODO вынести все это в лоадер
         Cursor cursor = new DBHelper(this).getWritableDatabase()
-                .query(DBHelper.DATABASE_TABLE_TRAINING, null, null, null, null, null, null);
+                .query(DBHelper.TABLE_EXERCISES, null, null, null, null, null, null);
         cursor.moveToFirst();
 
         //разбор курсора и сортировка данных, которые затем вставляются в адаптер для expandable listview
         for (int i = 0; i < cursor.getCount(); i++) {
-            String exerciseName = cursor.getString(cursor.getColumnIndex(DBHelper.GYMNASTIC_NAME_COLUMN));
+            String exerciseName = cursor.getString(cursor.getColumnIndex(DBHelper.EXERCISE_NAME));
             listDataHeader.add(exerciseName);
             int rowsQuantity = cursor.getInt(
-                    cursor.getColumnIndex(DBHelper.ROWS_PER_TRAINING_COLUMN));
+                    cursor.getColumnIndex(DBHelper.ROWS_PER_TRAINING));
             String iterations = Integer.toString(
-                    cursor.getInt(cursor.getColumnIndex(DBHelper.ITERATIONS_PER_TRAINING_COLUMN)));
+                    cursor.getInt(cursor.getColumnIndex(DBHelper.ITERATIONS_PER_TRAINING)));
             rows = new ArrayList<>();
             for (int j = 0; j < rowsQuantity; j++) {
                 rows.add("+ " + iterations + " iterations");

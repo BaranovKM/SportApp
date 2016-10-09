@@ -3,22 +3,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Заглушка для редактора"
-        android:id="@+id/textView"
-        android:layout_gravity="center_horizontal"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Table"
-        android:id="@+id/newTableInBD"
+        android:text="New workout"
+        android:id="@+id/addWorkout"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editWorkoutName"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/addWorkout"
+        android:text="Тренировка" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editExerciseName"
+        android:layout_below="@+id/editWorkoutName"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/editWorkoutName"
+        android:text="Упражнение" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editRows"
+        android:text="Подходы"
+        android:layout_alignTop="@+id/editIterations"
+        android:layout_toEndOf="@+id/editIterations" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editIterations"
+        android:layout_alignBottom="@+id/editExerciseName"
+        android:layout_toEndOf="@+id/editExerciseName"
+        android:text="Повторения" />
 </RelativeLayout>

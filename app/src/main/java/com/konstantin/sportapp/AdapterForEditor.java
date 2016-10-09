@@ -33,7 +33,6 @@ public class AdapterForEditor extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-
         return layoutInflater.inflate(R.layout.workouts_in_list,viewGroup,false);
     }
 
@@ -42,6 +41,7 @@ public class AdapterForEditor extends CursorAdapter {
 
         TextView name = (TextView) view.findViewById(R.id.workoutName);
        // name.setText(cursor.getString());
+        TextView exercises = (TextView) view.findViewById(R.id.exercises);
     }
 
 //    Context context;

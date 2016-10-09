@@ -8,9 +8,7 @@ public class EditorActivity extends AppCompatActivity {
 /*
  *Редактор тренировок
  */
-    //TODO Заполнение списка тренировок
-    //TODO 1)Реализовать создание новой таблицы по клику кнопки
-    //TODO 2)Реализовать заполнение таблицы из редактора
+    //TODO Сделать два отдельных вызова : первый для создания новой тренировки, второй для редактирования имеющейся
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
