@@ -9,6 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 /**
  * Created by Константин on 27.08.2016.
  */
@@ -16,6 +19,7 @@ public class DBHelper extends SQLiteOpenHelper implements BaseColumns {
     /*
     Вспомогательный класс для работы с SQLite
      */
+    //TODO реорганизовать таблицу : переименовать столбцы для числа повторений(сейчас число повторений в подходе записываться в столбец для общего кол.-ва повторений за тренировку)
     public static final String DATABASE_NAME = "db_for_sport_app"; //имя базы данных
     public static final int DATABASE_VERSION = 2; //версия базы данных
 
@@ -28,10 +32,13 @@ public class DBHelper extends SQLiteOpenHelper implements BaseColumns {
     public static final String EXERCISE_ID = "_id"; // идентификатор упражнения
     public static final String WORKOUT_ID_IN_TABLE_FOR_EXERCISES = "id_workout"; // идентификатор тренировки для связи таблицы
     public static final String EXERCISE_NAME = "name"; // названия упражнений
-    public static final String ROWS_PER_TRAINING = "rows_per_training"; // количество кругов/подходов за одну тренировку
+    public static final String ROWS_IN_WORKOUT = "rows_per_training"; // количество кругов/подходов за одну тренировку
     public static final String ROWS_AMOUNT = "rows_amount"; //общее количество кругов/подходов
-    public static final String ITERATIONS_PER_TRAINING = "iterations_per_training"; // подсчет повторение за тренировку
+    public static final String ITERATIONS_IN_ROW = "iterations_per_training"; // подсчет повторение за тренировку
     public static final String ITERATIONS_AMOUNT = "iterations_amount"; //общее количество повторение
+
+    ContentValues contentValues;
+    SQLiteDatabase database;
 
     DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -62,9 +69,9 @@ public class DBHelper extends SQLiteOpenHelper implements BaseColumns {
                 + " (" + EXERCISE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + EXERCISE_NAME + " TEXT NOT NULL, "
                 + WORKOUT_ID_IN_TABLE_FOR_EXERCISES + " INTEGER, "
-                + ROWS_PER_TRAINING + " INTEGER, "
+                + ROWS_IN_WORKOUT + " INTEGER, "
                 + ROWS_AMOUNT + " INTEGER, "
-                + ITERATIONS_PER_TRAINING + " INTEGER, "
+                + ITERATIONS_IN_ROW + " INTEGER, "
                 + ITERATIONS_AMOUNT + " INTEGER);");
         Log.d("TEST_SQL", "---TABLE " + TABLE_EXERCISES + " CREATED---");
     }
@@ -94,8 +101,8 @@ public class DBHelper extends SQLiteOpenHelper implements BaseColumns {
 
     public void prepareTables(Context context) {
         //создание нескольких дефолтных тренировок, для быстрого заполнения пустой дб
-        ContentValues contentValues = new ContentValues();
-        SQLiteDatabase database = new DBHelper(context).getWritableDatabase();
+        contentValues = new ContentValues();
+        database = new DBHelper(context).getWritableDatabase();
 
         String[] workoutsName = {"Грудь и спина", "Кардио", "Руки", "Ноги"};
         for (int i = 0; i < workoutsName.length; i++) {
@@ -114,11 +121,41 @@ public class DBHelper extends SQLiteOpenHelper implements BaseColumns {
             contentValues.clear();
             contentValues.put(EXERCISE_NAME, exercisesNames[i]);
             contentValues.put(WORKOUT_ID_IN_TABLE_FOR_EXERCISES, workoutID[i]);
-            contentValues.put(ROWS_PER_TRAINING, exerciseRows[i]);
-            contentValues.put(ITERATIONS_PER_TRAINING, exerciseIterations[i]);
+            contentValues.put(ROWS_IN_WORKOUT, exerciseRows[i]);
+            contentValues.put(ITERATIONS_IN_ROW, exerciseIterations[i]);
             database.insert(TABLE_EXERCISES, null, contentValues);
         }
         Log.d("TEST_SQL", "---TABLE " + TABLE_EXERCISES + "PREPARED AND POPULATED---");
     }
 
+    //вставка тренировки в бд
+    public void insertWorkout(Context context, String workoutName, ArrayList<Map<String,Object>> exercisesList) {
+        //TODO сделать чтоб вставлялось одной транзакцией
+        //подготавливаются вставляемые значения
+        contentValues = new ContentValues();
+        long idInsertedWorkout;// сюда записывается id вставленной тренировки, для последующей привязки упражнений
+
+        //сначала вставляется тренировка
+        contentValues.put(WORKOUT_NAME,workoutName);
+        database = new DBHelper(context).getWritableDatabase();
+        idInsertedWorkout = database.insert(TABLE_WORKOUTS, null, contentValues);
+        Log.d("TEST_SQL", "Добавлена тренировка : "+workoutName);
+        for (int i = 0; i < exercisesList.size(); i++) {
+            contentValues.clear();
+            contentValues.put(WORKOUT_ID_IN_TABLE_FOR_EXERCISES, idInsertedWorkout);
+            contentValues.put(EXERCISE_NAME, exercisesList.get(i).get(EditorFragment.EXERCISE_NAME).toString());
+            contentValues.put(ITERATIONS_IN_ROW, Integer.parseInt(exercisesList.get(i).get(EditorFragment.EXERCISE_ITERATIONS).toString()));
+            contentValues.put(ROWS_IN_WORKOUT, Integer.parseInt(exercisesList.get(i).get(EditorFragment.EXERCISE_ROWS).toString()));
+            database.insert(TABLE_EXERCISES, null, contentValues);
+            Log.d("TEST_SQL", "Добавлено упражнения : "+exercisesList.get(i).get(EditorFragment.EXERCISE_NAME).toString());
+        }
+        database.close();
+        Log.d("TEST_SQL", "---Все круто, данные вставились---");
+//        if(transaction == true){
+//        Log.d("TEST_SQL", "---insert data :" );
+//        }else {
+//            Log.d("TEST_SQL", "--- Что-то пошло не так---");
+//        }
+
+    }
 }

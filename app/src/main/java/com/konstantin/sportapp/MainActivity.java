@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     //TODO переделать главное меню: вместо кнопок сделать стандартное андроид-меню
     //TODO сделать фотогалерею
     //TODO сделать интеграцию с календарем(как источником даных) : синхронизировать тренировки
+    //TODO сделать раздел хэлпа с инструкцией(и раскидать иконки вызова ? по активити и фрагментам)
     //TODO
 
     @Override
@@ -73,8 +74,8 @@ public class MainActivity extends AppCompatActivity {
                 //заполнение базы данных (вставка нового упражнения)
 //                ContentValues contentValues = new ContentValues();
 //                contentValues.put(DBHelper.GYMNASTIC_NAME_COLUMN, "Пресс");
-//                contentValues.put(DBHelper.ROWS_PER_TRAINING, 1);
-//                contentValues.put(DBHelper.ITERATIONS_PER_TRAINING, 60);
+//                contentValues.put(DBHelper.ROWS_IN_WORKOUT, 1);
+//                contentValues.put(DBHelper.ITERATIONS_IN_ROW, 60);
 
 //                sqLiteDatabase.insert(DBHelper.DATABASE_TABLE_TRAINING, null, contentValues);
 //                new DBHelper(this).getWritableDatabase().insert(DBHelper.DATABASE_TABLE_TRAINING, null, contentValues);

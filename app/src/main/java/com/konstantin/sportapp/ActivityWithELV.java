@@ -51,9 +51,9 @@ public class ActivityWithELV extends AppCompatActivity {
             String exerciseName = cursor.getString(cursor.getColumnIndex(DBHelper.EXERCISE_NAME));
             listDataHeader.add(exerciseName);
             int rowsQuantity = cursor.getInt(
-                    cursor.getColumnIndex(DBHelper.ROWS_PER_TRAINING));
+                    cursor.getColumnIndex(DBHelper.ROWS_IN_WORKOUT));
             String iterations = Integer.toString(
-                    cursor.getInt(cursor.getColumnIndex(DBHelper.ITERATIONS_PER_TRAINING)));
+                    cursor.getInt(cursor.getColumnIndex(DBHelper.ITERATIONS_IN_ROW)));
             rows = new ArrayList<>();
             for (int j = 0; j < rowsQuantity; j++) {
                 rows.add("+ " + iterations + " iterations");

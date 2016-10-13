@@ -40,7 +40,7 @@ public class MyCursorLoader extends CursorLoader{
 //                new String[]{
 //                        BaseColumns._ID,
 //                        DBHelper.GYMNASTIC_NAME_COLUMN,
-//                        DBHelper.ROWS_PER_TRAINING},
+//                        DBHelper.ROWS_IN_WORKOUT},
 //                null, null, null, null, null);
 //        cursor.moveToFirst();
         //переделаный запрос к бд

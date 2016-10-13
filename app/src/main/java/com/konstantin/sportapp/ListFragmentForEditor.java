@@ -31,7 +31,7 @@ public class ListFragmentForEditor extends ListFragment implements LoadWorkouts.
 
     //новый адаптер и массивы для него
 //    SimpleCursorAdapter adapter;
-//    String[] fromColumn = {DBHelper.GYMNASTIC_NAME_COLUMN, DBHelper.ROWS_PER_TRAINING};
+//    String[] fromColumn = {DBHelper.GYMNASTIC_NAME_COLUMN, DBHelper.ROWS_IN_WORKOUT};
 //    int[] toViews = {R.id.fragmentTextView,R.id.buttonCheck};
 //    String[] fromColumn = {DBHelper.GYMNASTIC_NAME_COLUMN};
 //    int[] toViews = {R.id.fragmentTextView};
@@ -55,8 +55,6 @@ public class ListFragmentForEditor extends ListFragment implements LoadWorkouts.
         asyncTask.asyncResponse = this;//задается слушатель интерфейса для получения данных из асинтаска
         asyncTask.execute(getActivity());
 
-
-
         SimpleAdapter adapter;
         String[] from = {"workout","exercises"};
         int [] to = {R.id.workoutName,R.id.exercises};
@@ -68,9 +66,7 @@ public class ListFragmentForEditor extends ListFragment implements LoadWorkouts.
 
     @Override
     public void processFinished(HashMap<String, String> output) {
-        Log.d("TEST_SQL", "EXTRACT DATA FROM HASHMAP : " + output.get("Руки"));
         Map<String,String> map;
-
         for (String key : output.keySet()) {
             map = new HashMap<>();
             map.put("workout",key);

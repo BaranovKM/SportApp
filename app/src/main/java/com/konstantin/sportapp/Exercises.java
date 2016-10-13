@@ -19,12 +19,12 @@ public class Exercises extends Fragment {
     //TODO вынести ключи аргументов в отдельные константы
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.exercise_layout, null);
-        TextView nameExercise = (TextView) view.findViewById(R.id.fragmentTextView);
+//        TextView nameExercise = (TextView) view.findViewById(R.id.fragmentTextView);
 //        nameExercise.setText("Exercise name");
-        nameExercise.setText(getArguments().getString("nameExercise"));
+//        nameExercise.setText(getArguments().getString("nameExercise"));
 
-        Button buttonCheck = (Button) view.findViewById(R.id.buttonCheck);
-        buttonCheck.setText(Integer.toString(getArguments().getInt("rows")));
+      //  Button buttonCheck = (Button) view.findViewById(R.id.buttonCheck);
+       // buttonCheck.setText(Integer.toString(getArguments().getInt("rows")));
         return view;
     }
 

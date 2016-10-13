@@ -25,9 +25,6 @@ public class LoadWorkouts extends AsyncTask<Context, Void, HashMap<String, Strin
 
     @Override
     protected HashMap<String, String> doInBackground(Context... contexts) {
-
-        //TODO пересоздать таблицы при первом запуске
-
         for (Context context : contexts) {
 //            String sqlQuery = "select W." + DBHelper.WORKOUT_NAME + ", E." + DBHelper.EXERCISE_NAME +
 //                    " from " + DBHelper.TABLE_WORKOUTS + " AS W" +
@@ -45,12 +42,13 @@ public class LoadWorkouts extends AsyncTask<Context, Void, HashMap<String, Strin
                     DBHelper.TABLE_WORKOUTS,
                     columnsWorkout,
                     null, null, null, null, null);
-            Log.d("TEST_SQL", "---TABLE " + DBHelper.TABLE_WORKOUTS + " READED---");
+            Log.d("TEST_SQL", "--- Асинтаск : запрос к таблице с именами тренировок---");
             dbHelper.cursorReader(cursorWorkouts);
 
             cursorWorkouts.moveToFirst();
-            //отбираются упражнения в конкретной тренировке
+            //сортируются упражнения в конкретной тренировке, для последующей передачи через хэш-мап
             for (int i = 0; i < cursorWorkouts.getCount(); i++) {
+                //для каждой строки из курсора по id ищутся соответсвующие упражнения
                 String workoutName = cursorWorkouts.getString(cursorWorkouts.getColumnIndex(DBHelper.WORKOUT_NAME));
                 Log.d("TEST_SQL", "Workout : " + workoutName);
                 String[] selectionArgs = {cursorWorkouts.getString(cursorWorkouts.getColumnIndex(DBHelper.WORKOUT_ID))};
@@ -61,8 +59,6 @@ public class LoadWorkouts extends AsyncTask<Context, Void, HashMap<String, Strin
                         selectionArgs,
                         null, null, null);
 
-//                Log.d("TEST_SQL", "Cursor with exercises");
-//                dbHelper.cursorReader(cursorExercises);
                 //создается перечень из названий упражнений
                 exercisesNames = null;//обнуляется перед каждой следующей тренировкой(чтобы строки не накладывались)
                 if (cursorExercises.moveToFirst()) {
@@ -95,9 +91,8 @@ public class LoadWorkouts extends AsyncTask<Context, Void, HashMap<String, Strin
 
     @Override
     protected void onPostExecute(HashMap<String, String> stringStringHashMap) {
-        SystemClock.sleep(3000);//имитация задержки в 3 секунды
+//        SystemClock.sleep(3000);//имитация задержки в 3 секунды
         stringStringHashMap = hashMap;
-        Log.d("TEST_SQL", "DATA FOR ADAPTER INSERT INTO HASHMAP");
         asyncResponse.processFinished(stringStringHashMap);
         super.onPostExecute(stringStringHashMap);
     }
