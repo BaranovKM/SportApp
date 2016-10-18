@@ -82,15 +82,6 @@ public class EditExerciseDialog extends DialogFragment implements View.OnClickLi
                 break;
         }
         return view;
-//        return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    //вывод в лог введеных пользователем данных
-    void onOK() {
-        Log.d("TEST_DIALOG", "-----EXERCISE DATA INPUT IN DIALOG-----");
-        Log.d("TEST_DIALOG", "NAME : " + name);
-        Log.d("TEST_DIALOG", "ITERATIONS : " + iterations);
-        Log.d("TEST_DIALOG", "ROWS : " + rows);
     }
 
     @Override

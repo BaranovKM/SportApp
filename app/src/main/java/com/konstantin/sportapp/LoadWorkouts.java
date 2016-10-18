@@ -13,27 +13,22 @@ import java.util.HashMap;
 /**
  * Created by Константин on 06.10.2016.
  */
-public class LoadWorkouts extends AsyncTask<Context, Void, HashMap<String, String>> {
-        Cursor cursorWorkouts;
-        Cursor cursorExercises;
-        HashMap<String,String> hashMap = new HashMap<>();
+public class LoadWorkouts extends AsyncTask<Context, Void, ArrayList<HashMap<String,String>>> {
+    Cursor cursorWorkouts;
+    Cursor cursorExercises;
+    ArrayList<HashMap<String,String>> arrayListWithWorkoutData = new ArrayList();
 
     //интерфейс для получения результатов асинхроного запроса
-    public interface AsyncResponse{
-        void processFinished(HashMap<String,String> output);
+    public interface AsyncResponse {
+        void processFinished(ArrayList<HashMap<String,String>> output);
     }
 
     @Override
-    protected HashMap<String, String> doInBackground(Context... contexts) {
+    protected ArrayList<HashMap<String,String>> doInBackground(Context... contexts) {
         for (Context context : contexts) {
-//            String sqlQuery = "select W." + DBHelper.WORKOUT_NAME + ", E." + DBHelper.EXERCISE_NAME +
-//                    " from " + DBHelper.TABLE_WORKOUTS + " AS W" +
-//                    " INNER JOIN " + DBHelper.TABLE_EXERCISES + " AS E" +
-//                    " ON W._id = E.id_workout";
-
             String[] columnsWorkout = {DBHelper.WORKOUT_ID, DBHelper.WORKOUT_NAME};
             String[] columnsExercise = {DBHelper.EXERCISE_NAME};
-            String exercisesNames = new String();
+            String exercisesNames;
 
             DBHelper dbHelper = new DBHelper(context);
             SQLiteDatabase database = dbHelper.getWritableDatabase();
@@ -42,16 +37,15 @@ public class LoadWorkouts extends AsyncTask<Context, Void, HashMap<String, Strin
                     DBHelper.TABLE_WORKOUTS,
                     columnsWorkout,
                     null, null, null, null, null);
-            Log.d("TEST_SQL", "--- Асинтаск : запрос к таблице с именами тренировок---");
             dbHelper.cursorReader(cursorWorkouts);
 
             cursorWorkouts.moveToFirst();
             //сортируются упражнения в конкретной тренировке, для последующей передачи через хэш-мап
             for (int i = 0; i < cursorWorkouts.getCount(); i++) {
-                //для каждой строки из курсора по id ищутся соответсвующие упражнения
+                //для каждой строки из курсора(список тренировок) по id ищутся соответсвующие упражнения
                 String workoutName = cursorWorkouts.getString(cursorWorkouts.getColumnIndex(DBHelper.WORKOUT_NAME));
-                Log.d("TEST_SQL", "Workout : " + workoutName);
-                String[] selectionArgs = {cursorWorkouts.getString(cursorWorkouts.getColumnIndex(DBHelper.WORKOUT_ID))};
+                String workoutID = cursorWorkouts.getString(cursorWorkouts.getColumnIndex(DBHelper.WORKOUT_ID));
+                String[] selectionArgs = {workoutID};
                 cursorExercises = database.query(
                         DBHelper.TABLE_EXERCISES,
                         null,
@@ -60,22 +54,25 @@ public class LoadWorkouts extends AsyncTask<Context, Void, HashMap<String, Strin
                         null, null, null);
 
                 //создается перечень из названий упражнений
-                exercisesNames = null;//обнуляется перед каждой следующей тренировкой(чтобы строки не накладывались)
+                exercisesNames = new String();
+                exercisesNames = "";//чтобы срабатывала проверка и корректно проставлялись запятные между словами
                 if (cursorExercises.moveToFirst()) {
                     do {
-                        if (exercisesNames != null) {
-                            exercisesNames = exercisesNames + " , "
-                                    + cursorExercises.getString(cursorExercises.getColumnIndex(DBHelper.EXERCISE_NAME));
-                        } else {
+                        if (exercisesNames.equals("")) {
                             exercisesNames = cursorExercises.getString(cursorExercises.getColumnIndex(DBHelper.EXERCISE_NAME));
+                        } else {
+                            exercisesNames = exercisesNames + ", "
+                                    + cursorExercises.getString(cursorExercises.getColumnIndex(DBHelper.EXERCISE_NAME));
                         }
                     } while (cursorExercises.moveToNext());
                 }
                 //название тренировки и список упражнений в ней, вставляются в хэшмап
-                hashMap.put(workoutName,exercisesNames);
+                HashMap<String,String> hashMap = new HashMap();
+                hashMap.put(ListFragmentForEditor.WORKOUT_NAME, workoutName);
+                hashMap.put(ListFragmentForEditor.WORKOUT_ID, workoutID);
+                hashMap.put(ListFragmentForEditor.EXERCISES, exercisesNames);
+                arrayListWithWorkoutData.add(hashMap);
 
-                Log.d("TEST_SQL", "Exercise : " + exercisesNames);
-                Log.d("TEST_SQL", "--------------------------");
                 if (cursorWorkouts.isAfterLast()) {
                     cursorWorkouts.close();
                     database.close();
@@ -90,10 +87,10 @@ public class LoadWorkouts extends AsyncTask<Context, Void, HashMap<String, Strin
     public AsyncResponse asyncResponse = null;
 
     @Override
-    protected void onPostExecute(HashMap<String, String> stringStringHashMap) {
+    protected void onPostExecute(ArrayList<HashMap<String,String>> arrayList) {
 //        SystemClock.sleep(3000);//имитация задержки в 3 секунды
-        stringStringHashMap = hashMap;
-        asyncResponse.processFinished(stringStringHashMap);
-        super.onPostExecute(stringStringHashMap);
+        arrayList = arrayListWithWorkoutData;
+        asyncResponse.processFinished(arrayList);
+        super.onPostExecute(arrayList);
     }
 }

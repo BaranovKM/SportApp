@@ -129,17 +129,17 @@ public class DBHelper extends SQLiteOpenHelper implements BaseColumns {
     }
 
     //вставка тренировки в бд
-    public void insertWorkout(Context context, String workoutName, ArrayList<Map<String,Object>> exercisesList) {
+    public void insertWorkout(Context context, String workoutName, ArrayList<Map<String, Object>> exercisesList) {
         //TODO сделать чтоб вставлялось одной транзакцией
         //подготавливаются вставляемые значения
         contentValues = new ContentValues();
         long idInsertedWorkout;// сюда записывается id вставленной тренировки, для последующей привязки упражнений
 
         //сначала вставляется тренировка
-        contentValues.put(WORKOUT_NAME,workoutName);
+        contentValues.put(WORKOUT_NAME, workoutName);
         database = new DBHelper(context).getWritableDatabase();
         idInsertedWorkout = database.insert(TABLE_WORKOUTS, null, contentValues);
-        Log.d("TEST_SQL", "Добавлена тренировка : "+workoutName);
+        Log.d("TEST_SQL", "Добавлена тренировка : " + workoutName);
         for (int i = 0; i < exercisesList.size(); i++) {
             contentValues.clear();
             contentValues.put(WORKOUT_ID_IN_TABLE_FOR_EXERCISES, idInsertedWorkout);
@@ -147,7 +147,7 @@ public class DBHelper extends SQLiteOpenHelper implements BaseColumns {
             contentValues.put(ITERATIONS_IN_ROW, Integer.parseInt(exercisesList.get(i).get(EditorFragment.EXERCISE_ITERATIONS).toString()));
             contentValues.put(ROWS_IN_WORKOUT, Integer.parseInt(exercisesList.get(i).get(EditorFragment.EXERCISE_ROWS).toString()));
             database.insert(TABLE_EXERCISES, null, contentValues);
-            Log.d("TEST_SQL", "Добавлено упражнения : "+exercisesList.get(i).get(EditorFragment.EXERCISE_NAME).toString());
+            Log.d("TEST_SQL", "Добавлено упражнения : " + exercisesList.get(i).get(EditorFragment.EXERCISE_NAME).toString());
         }
         database.close();
         Log.d("TEST_SQL", "---Все круто, данные вставились---");
@@ -157,5 +157,20 @@ public class DBHelper extends SQLiteOpenHelper implements BaseColumns {
 //            Log.d("TEST_SQL", "--- Что-то пошло не так---");
 //        }
 
+    }
+
+    //удаление тренировки
+    public void removeWorkout(Context context, int workoutId) {
+        database = new DBHelper(context).getWritableDatabase();
+        int delCount = database.delete(TABLE_WORKOUTS, WORKOUT_ID + " = " + workoutId, null);
+        Log.d("TEST_SQL", "Из таблицы тренировок удалено строк : " + delCount);
+        delCount = database.delete(TABLE_EXERCISES, WORKOUT_ID_IN_TABLE_FOR_EXERCISES + " = " + workoutId, null);
+        Log.d("TEST_SQL", "Из таблицы упражнений удалено строк : " + delCount);
+    }
+    public void removeCurrentExercise(Context context, int exerciseId) {
+        database = new  DBHelper(context).getWritableDatabase();
+        database.delete(TABLE_EXERCISES,WORKOUT_ID+" = "+exerciseId,null);
+        Log.d("TEST_UI", " Упражнение c id " + exerciseId + " было удалено из бд");
+        database.close();
     }
 }
