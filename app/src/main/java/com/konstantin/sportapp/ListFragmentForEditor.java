@@ -22,7 +22,7 @@ import java.util.Map;
  * Created by Константин on 15.09.2016.
  */
 /*
- *Вспомогательный класс, отображает список упражнений
+ *Вспомогательный класс, отображает список тренировок в редакторе
  */
 public class ListFragmentForEditor extends Fragment implements LoadWorkouts.AsyncResponse {
 
@@ -32,10 +32,12 @@ public class ListFragmentForEditor extends Fragment implements LoadWorkouts.Asyn
     public static final int REMOVE = 1;
     public static final int EDIT = 2;
 
-        SimpleAdapter adapter;
+    //настройки адаптера, который будет заполнять ListView
+    SimpleAdapter adapter;
     ArrayList<Map<String, String>> data = new ArrayList<>();
     String[] from = {WORKOUT_NAME, EXERCISES};
     int[] to = {R.id.workoutName, R.id.exercises};
+
     ListView listView;
     Button addWorkout;
 
@@ -47,11 +49,12 @@ public class ListFragmentForEditor extends Fragment implements LoadWorkouts.Asyn
         adapter = new SimpleAdapter(getContext(), data, R.layout.workouts_in_list, from, to);
         listView.setAdapter(adapter);
 
+        //создается асинхроный процесс для загрузки тренировок из бд вне основного потока приложения
         LoadWorkouts asyncTask = new LoadWorkouts();
         asyncTask.asyncResponse = this;//задается слушатель интерфейса для получения данных из асинтаска
         asyncTask.execute(getActivity());
 
-        registerForContextMenu(listView);
+        registerForContextMenu(listView);//регистрация контекстного меню
         return view;
     }
 
@@ -72,6 +75,7 @@ public class ListFragmentForEditor extends Fragment implements LoadWorkouts.Asyn
             case REMOVE:
                 //TODO добавить подтверждение удаления
                 //если тренировка удаляется, то создается запрос в бд на удаление
+                //а затем она удаляется из списка в list view
                 DBHelper dbHelper = new DBHelper(getActivity());
                 SQLiteDatabase database = dbHelper.getWritableDatabase();
                 dbHelper.removeWorkout(getActivity(), Integer.parseInt(
@@ -100,8 +104,8 @@ public class ListFragmentForEditor extends Fragment implements LoadWorkouts.Asyn
 
     @Override
     public void processFinished(ArrayList<HashMap<String, String>> output) {
-        //полученые из асинтаска данные подставляются в ArrayList на основе которого
-        // адаптер создает список имеющихся тренировок
+        //когда асинхронный процесс отработает и вернет данные по упражнению
+        //они подставятся в ArrayList на основе которого адаптер создает список имеющихся тренировок
         Map<String, String> map;
         for (HashMap<String, String> hashMap : output) {
             map = new HashMap<>();

@@ -29,12 +29,18 @@ import java.util.Map;
  */
 public class EditorFragment extends Fragment implements View.OnClickListener, EditExerciseDialog.ExerciseDataListener {
 
-    //константы для настройки
+    /*
+     *Фрагмент в котором редактируется уже существующая тренировка,
+     * либо заполняются значения для создания новой
+     */
+
+    //параметры выбора действий для конктретного упражнения(используются в контекстном меню)
+    public static final String ACTION_TYPE = "actionType";
     public static final int ADD = 1;
     public static final int EDIT = 2;
     public static final int REMOVE = 3;
 
-    public static final String ACTION_TYPE = "actionType";
+    //прочие константы
     public static final String IF_NAME_IS_EMPTY = "Не задано название тренировки";
     public static final String EXERCISE_NAME = "name";
     public static final String EXERCISE_ID = "_id";
@@ -80,7 +86,6 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Ed
             int workoutId = getArguments().getInt(ListFragmentForEditor.WORKOUT_ID);
             Log.d("TEST_ARG", "ID тренировки передался в редактор : " + workoutId);
             editCurrentWorkout(workoutId);
-            //data.add();
         }
         //Настройка адаптера списка
         simpleAdapter = new SimpleAdapter(getContext(), data, R.layout.exercise_layout, from, to);
@@ -127,6 +132,7 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Ed
         dbHelper.cursorReader(cursorExercises);
     }
 
+    //создание контекстного меню при долгом клике по упражнению в списке
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         //элементы контекстного меню
@@ -137,7 +143,7 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Ed
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        //действия после выбора элемента в меню
+        //действия после выбора элемента в контекстном меню
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
             case REMOVE:
@@ -152,12 +158,12 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Ed
                     dbHelper.removeCurrentExercise(getActivity(),exercise_id);
                     database.close();
                 }
-                //поиск и удаление упражнения из списка по id элемента
+                //поиск и удаление упражнения из списка отображаемого во фрагменте
                 data.remove(menuInfo.position);
                 simpleAdapter.notifyDataSetChanged();
                 return true;
             case EDIT:
-                //редактирование элемента
+                //редактирование выбранного упражнения
                 fragmentTransaction = getFragmentManager().beginTransaction();
                 editExerciseDialog = EditExerciseDialog.newInstance();
                 //передача параметров выбранного упражнения в экземпляр диалога
@@ -180,10 +186,9 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Ed
         return super.onContextItemSelected(item);
     }
 
-
     @Override
     public void onClick(View view) {
-        //обработка клика по кнопке
+        //обработка клика по кнопке "сохранить тренировку"
         switch (view.getId()) {
             case R.id.addWorkout:
                 //добавление тренировки в бд
@@ -195,7 +200,7 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Ed
                 } else {
                     DBHelper dbHelper = new DBHelper(getActivity());
                     SQLiteDatabase database = dbHelper.getWritableDatabase();
-                    //удаление предыдущей тренировки
+                    //удаление предыдущей тренировки(т.к. она пересоздается)
                     if (getArguments() !=null){
                         dbHelper.removeWorkout(
                                 getActivity(),
@@ -226,7 +231,7 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Ed
 
     @Override
     public void onEnterExerciseData(String name, int iterations, int rows) {
-        //прием введеных данных из диалога
+        //интерфейс для приема данных об упражнении из диалога редактирования
         map = new HashMap<>();
         map.put(EXERCISE_NAME, name);
         map.put(EXERCISE_ITERATIONS, iterations);

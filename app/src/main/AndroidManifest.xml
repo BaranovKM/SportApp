@@ -24,7 +24,11 @@
             android:name=".Cardio"
             android:screenOrientation="portrait" />
         <activity android:name=".ActivityWithELV" />
-        <activity android:name=".EditorActivity"></activity>
+        <activity android:name=".EditorActivity" />
+        <activity
+            android:name=".NavigationDrawer"
+            android:label="@string/title_activity_navigation_drawer"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

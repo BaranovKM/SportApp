@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+<group android:checkableBehavior="single">
+    <item
+        android:id="@+id/drawer_menu_workouts"
+        android:icon="@drawable/ic_menu_gallery"
+        android:title="Тренировки" />
+    <item
+        android:id="@+id/drawer_menu_diet"
+        android:icon="@drawable/ic_menu_slideshow"
+        android:title="Диета и фармакология" />
+
+    <item
+        android:id="@+id/drawer_menu_photo"
+        android:icon="@drawable/ic_menu_camera"
+        android:title="Фотки себя любимого" />
+    <item
+        android:id="@+id/drawer_menu_music"
+        android:icon="@drawable/ic_menu_camera"
+        android:title="Музыка и аудиокнижки" />
+</group>
+
+<item android:title="Настройки">
+    <menu>
+        <item
+            android:id="@+id/drawer_menu_editor"
+            android:icon="@drawable/ic_menu_share"
+            android:title="Редактор тренировок и упражнений" />
+        <item
+            android:id="@+id/drawer_menu_help"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Хэлп" />
+    </menu>
+</item>
+
+</menu>

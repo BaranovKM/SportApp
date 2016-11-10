@@ -17,13 +17,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO придумать редактор тренировок(пример добавления записей в бд из текста в textView : андроид1,видео8 40 минута)
-//TODO в редакторе упражнений сделать для полей хинты и подсказки : https://youtu.be/egKox1-6cEk?list=PLyfVjOYzujugEUT-7gYhONqB5Y1xszpCq
-//TODO сделать майнд-мап для приложения
-//TODO Сделать кнопку для ручного добавления повторений в последнем подходе(например как выбор даты)
 //TODO Сделать кнопки для старта и окончания тренировки
 //TODO добавить быстрое управление медиа-плэйером(смена треков и т.д.)
-
 //TODO После завершения тренировки отображать статистику(подходы/повторения за тренировку и общее кол.во и за все время)
 public class TrainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 

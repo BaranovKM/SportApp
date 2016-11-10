@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+//TODO добавить прогресс-бар показывающий выполнение тренировки
+//TODO вынести загрузку информации по тренировке в лоадер или отдельный асинтаск
 public class ActivityWithELV extends AppCompatActivity {
 
     String test = new String();
@@ -22,26 +24,7 @@ public class ActivityWithELV extends AppCompatActivity {
         List<String> listDataHeader = new ArrayList<>();
         HashMap<String, List<String>> listDataChild = new HashMap<String, List<String>>();
         List<String> rows;
-//TODO добавить прогресс-бар показывающий выполнение тренировки
 
-        //настройка автоматического заполнения адаптера по данным из бд
-//        String[] exercisesNames = {"Подтягивания", "Пресс", "Отжимания"};
-//        int[] exerciseRows = {3, 1, 5};
-//        int[] exercisesIterations = {5, 60, 10};
-//
-//        for (String name : exercisesNames) {
-//            listDataHeader.add(name);
-//        }
-//
-//        List<String> rows = new ArrayList<>();
-//        for (int row : exerciseRows) {
-//            rows.add("+ " + exerciseIterations + " iterations");
-//        }
-//
-//        for (int i = 0; i < exerciseRows; i++) {
-//        }
-//        listDataChild.put(listDataHeader.get(0), rows);
-//TODO вынести все это в лоадер
         Cursor cursor = new DBHelper(this).getWritableDatabase()
                 .query(DBHelper.TABLE_EXERCISES, null, null, null, null, null, null);
         cursor.moveToFirst();
@@ -58,7 +41,7 @@ public class ActivityWithELV extends AppCompatActivity {
             for (int j = 0; j < rowsQuantity; j++) {
                 rows.add("+ " + iterations + " iterations");
             }
-            listDataChild.put(exerciseName,rows);
+            listDataChild.put(exerciseName, rows);
             //проверка содержимого массива
             for (String string : rows) {
                 test = test + string + " ";
@@ -72,12 +55,6 @@ public class ActivityWithELV extends AppCompatActivity {
         }
         cursor.close();
 
-//        listDataHeader.add(exerciseName);
-//        List<String> rows = new ArrayList<>();
-//        for (int i = 0; i < exerciseRows; i++) {
-//            rows.add("+ "+exerciseIterations+" iterations");
-//        }
-//        listDataChild.put(listDataHeader.get(0), rows);
 
         //вставка данных в адаптер
         ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.expandableListView2);
@@ -85,10 +62,6 @@ public class ActivityWithELV extends AppCompatActivity {
         expandableListView.setAdapter(adapterForELV);
 
         //тесты
-//        for (String string : rows) {
-//            test = test + string + " ";
-//        }
-//        Log.d("TEST_LOG", "Массив содержит : " + test);
         Log.d("TEST_LOG", "LOADER RETURN RESULT :" + cursor.getCount() + " strings");
     }
 }

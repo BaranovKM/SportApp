@@ -12,12 +12,11 @@ import android.util.Log;
 /**
  * Created by Константин on 05.09.2016.
  */
-public class MyCursorLoader extends CursorLoader{
+public class MyCursorLoader extends CursorLoader {
     /*
     Вспомогательный класс, для асинхроной работы с базой вне основного потока(чтобы UI не зависал
     при выполнении долгих/крупных запросов в бд)
      */
-//TODO Доработать лоадер, чтобы названия упражнений во фрагментах корректно отображались даже при 2-3 секундной задержке
     public MyCursorLoader(Context context) {
         super(context);
     }
@@ -45,6 +44,6 @@ public class MyCursorLoader extends CursorLoader{
 //        cursor.moveToFirst();
         //переделаный запрос к бд
         return new DBHelper(getContext()).getWritableDatabase()
-                .query(DBHelper.TABLE_EXERCISES, null,null,null,null,null,null);
+                .query(DBHelper.TABLE_EXERCISES, null, null, null, null, null, null);
     }
 }

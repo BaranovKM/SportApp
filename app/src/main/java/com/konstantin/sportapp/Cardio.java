@@ -18,7 +18,8 @@ public class Cardio extends AppCompatActivity{
     /*
     Вспомогательный класс для работы с разделом кардио-тренировок
      */
-    //массивы для элементов
+
+    //быстрое заполнение (для тестов) списка упражнений
     String[] rootElements = new String[]{"Отжимания","Подтягивания","Пресс"};
     String[] childItems1 = new String[]{"+10","+10","+10"};
     String[] childItems2 = new String[]{"+5","+4","+3"};

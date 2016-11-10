@@ -14,11 +14,16 @@ import java.util.HashMap;
  * Created by Константин on 06.10.2016.
  */
 public class LoadWorkouts extends AsyncTask<Context, Void, ArrayList<HashMap<String,String>>> {
-    Cursor cursorWorkouts;
-    Cursor cursorExercises;
+
+    /*
+     *Асинхронный процесс, загружающий в фоновом режиме данные по конкретной тренировке
+     */
+
+    Cursor cursorWorkouts;//курсор для загрузки данных по тренировке(название и id)
+    Cursor cursorExercises;//курсор для загрузки упражнений(название, кол-во подходов и повторений)
     ArrayList<HashMap<String,String>> arrayListWithWorkoutData = new ArrayList();
 
-    //интерфейс для получения результатов асинхроного запроса
+    //интерфейс для передачи полученых результатов обратно в редактор
     public interface AsyncResponse {
         void processFinished(ArrayList<HashMap<String,String>> output);
     }
@@ -26,6 +31,7 @@ public class LoadWorkouts extends AsyncTask<Context, Void, ArrayList<HashMap<Str
     @Override
     protected ArrayList<HashMap<String,String>> doInBackground(Context... contexts) {
         for (Context context : contexts) {
+            //настройка столбцов из которых будет состоять запрос в бд
             String[] columnsWorkout = {DBHelper.WORKOUT_ID, DBHelper.WORKOUT_NAME};
             String[] columnsExercise = {DBHelper.EXERCISE_NAME};
             String exercisesNames;
@@ -40,9 +46,10 @@ public class LoadWorkouts extends AsyncTask<Context, Void, ArrayList<HashMap<Str
             dbHelper.cursorReader(cursorWorkouts);
 
             cursorWorkouts.moveToFirst();
-            //сортируются упражнения в конкретной тренировке, для последующей передачи через хэш-мап
+            // полученый курсор сортируется  по упражнениям в конкретной тренировке,
+            // список которых затем передается в хэш-мап(которая в свою очередь, вернется в редактор тренировок)
             for (int i = 0; i < cursorWorkouts.getCount(); i++) {
-                //для каждой строки из курсора(список тренировок) по id ищутся соответсвующие упражнения
+                //для каждой строки из курсора с тренировками по id запрашиваются соответсвующие упражнения
                 String workoutName = cursorWorkouts.getString(cursorWorkouts.getColumnIndex(DBHelper.WORKOUT_NAME));
                 String workoutID = cursorWorkouts.getString(cursorWorkouts.getColumnIndex(DBHelper.WORKOUT_ID));
                 String[] selectionArgs = {workoutID};
@@ -53,20 +60,23 @@ public class LoadWorkouts extends AsyncTask<Context, Void, ArrayList<HashMap<Str
                         selectionArgs,
                         null, null, null);
 
-                //создается перечень из названий упражнений
+                //создается список упражнений
                 exercisesNames = new String();
-                exercisesNames = "";//чтобы срабатывала проверка и корректно проставлялись запятные между словами
+                exercisesNames = "";
                 if (cursorExercises.moveToFirst()) {
                     do {
                         if (exercisesNames.equals("")) {
+                            //если строка с упражнениями пустая, из курсора добавляется название упражнения
                             exercisesNames = cursorExercises.getString(cursorExercises.getColumnIndex(DBHelper.EXERCISE_NAME));
                         } else {
+                            //иначе добавляется запятая с пробелом и лишь потом дописывается название
                             exercisesNames = exercisesNames + ", "
                                     + cursorExercises.getString(cursorExercises.getColumnIndex(DBHelper.EXERCISE_NAME));
                         }
                     } while (cursorExercises.moveToNext());
                 }
-                //название тренировки и список упражнений в ней, вставляются в хэшмап
+                //название тренировки и список упражнений, вставляются в хэшмап
+                //который потом отправится назад в редактор
                 HashMap<String,String> hashMap = new HashMap();
                 hashMap.put(ListFragmentForEditor.WORKOUT_NAME, workoutName);
                 hashMap.put(ListFragmentForEditor.WORKOUT_ID, workoutID);
@@ -88,7 +98,7 @@ public class LoadWorkouts extends AsyncTask<Context, Void, ArrayList<HashMap<Str
 
     @Override
     protected void onPostExecute(ArrayList<HashMap<String,String>> arrayList) {
-//        SystemClock.sleep(3000);//имитация задержки в 3 секунды
+//        SystemClock.sleep(3000);//имитация задержки в 3 секунды для проверки что UI не зависает
         arrayList = arrayListWithWorkoutData;
         asyncResponse.processFinished(arrayList);
         super.onPostExecute(arrayList);
