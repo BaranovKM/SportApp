@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by Константин on 28.09.2016.
  */
-public class AdapterForELV extends BaseExpandableListAdapter{
+public class AdapterForELV extends BaseExpandableListAdapter {
     /*
      *Адаптер для заполнения ExpandableListView
      */
@@ -22,7 +22,7 @@ public class AdapterForELV extends BaseExpandableListAdapter{
     List<String> listDataHeader; //список заголовков
     HashMap<String, List<String>> listDataChild; //список элементов
 
-    public AdapterForELV(Context context, List<String> listDataHeader, HashMap<String,List<String>> listDataChild) {
+    public AdapterForELV(Context context, List<String> listDataHeader, HashMap<String, List<String>> listDataChild) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listDataChild;
@@ -66,10 +66,10 @@ public class AdapterForELV extends BaseExpandableListAdapter{
     @Override
     public View getGroupView(int groupPosition, boolean isExpended, View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
-        if(convertView == null){
+        if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(
                     Context.LAYOUT_INFLATER_SERVICE);
-            convertView = layoutInflater.inflate(android.R.layout.simple_expandable_list_item_1,null);
+            convertView = layoutInflater.inflate(android.R.layout.simple_expandable_list_item_1, null);
         }
         TextView textView = (TextView) convertView.findViewById(android.R.id.text1);
         textView.setTypeface(null, Typeface.BOLD);
@@ -79,11 +79,11 @@ public class AdapterForELV extends BaseExpandableListAdapter{
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        String childText = (String) getChild(groupPosition,childPosition);
-        if(convertView == null){
+        String childText = (String) getChild(groupPosition, childPosition);
+        if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(android.R.layout.simple_list_item_1,null);
+            convertView = inflater.inflate(android.R.layout.simple_list_item_1, null);
         }
         TextView textView = (TextView) convertView.findViewById(android.R.id.text1);
         textView.setText(childText);
@@ -93,5 +93,11 @@ public class AdapterForELV extends BaseExpandableListAdapter{
     @Override
     public boolean isChildSelectable(int i, int i1) {
         return true;
+    }
+
+    public void removeChild(int group,int child) {
+        this.listDataChild.get(this.listDataHeader.get(group)).remove(child);
+
+//        return this.listDataChild.get(this.listDataHeader.get(groupPosition)).get(childPosition);
     }
 }

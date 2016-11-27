@@ -14,6 +14,9 @@ public class DietFragment extends Fragment {
     /*
      *Фрагмент для отображения раздела с диетой и "витаминками"
      */
+
+    public static final String FRAGMENT_TAG = "DIET"; //константа для идентификации фрагмента
+
     public static DietFragment newInstance() {
         DietFragment fragment = new DietFragment();
         return fragment;

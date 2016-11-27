@@ -16,4 +16,21 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
+    <Chronometer
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chronometer"
+        android:visibility="visible"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:paddingLeft="50dp"/>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_alignBottom="@+id/chronometer"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/progressBar" />
+
 </RelativeLayout>

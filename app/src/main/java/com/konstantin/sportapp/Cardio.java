@@ -19,6 +19,9 @@ public class Cardio extends AppCompatActivity{
     Вспомогательный класс для работы с разделом кардио-тренировок
      */
 
+    public static final String FRAGMENT_TAG = "cardio"; //константа для идентификации фрагмента
+
+
     //быстрое заполнение (для тестов) списка упражнений
     String[] rootElements = new String[]{"Отжимания","Подтягивания","Пресс"};
     String[] childItems1 = new String[]{"+10","+10","+10"};

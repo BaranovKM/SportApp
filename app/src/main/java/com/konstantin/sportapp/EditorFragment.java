@@ -34,6 +34,9 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Ed
      * либо заполняются значения для создания новой
      */
 
+    public static final String FRAGMENT_TAG = "editor"; //константа для идентификации фрагмента
+
+
     //параметры выбора действий для конктретного упражнения(используются в контекстном меню)
     public static final String ACTION_TYPE = "actionType";
     public static final int ADD = 1;

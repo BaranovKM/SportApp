@@ -19,7 +19,7 @@ public class ActivityWithELV extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_activity_with_elv);
+        setContentView(R.layout.layout_with_explstview);
 
         List<String> listDataHeader = new ArrayList<>();
         HashMap<String, List<String>> listDataChild = new HashMap<String, List<String>>();
