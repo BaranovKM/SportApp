@@ -6,11 +6,12 @@
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="Сохранить тренировку"
         android:id="@+id/addWorkout"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textSize="24sp"
+        android:layout_height="70dp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -18,8 +19,8 @@
         android:id="@+id/editWorkoutName"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:hint="Название тренировки"
-        android:textSize="30sp" />
+        android:hint="Введите название тренировки"
+        android:textSize="24sp" />
 
     <Button
         android:layout_width="match_parent"

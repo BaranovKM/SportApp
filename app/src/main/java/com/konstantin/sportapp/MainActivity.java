@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -24,6 +25,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.support.v7.widget.Toolbar;
 import android.widget.Chronometer;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,15 +34,15 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, LoadWorkouts.AsyncResponse {
-    //TODO найти/сделать иконки для кнопок(гантель для кнопки силовых, сердце для кнопки кардио и т.д.)
     //TODO сделать перелистывание между разделами методом ViewPager
     //TODO Сделать сохранение тренировки при переключении между активностями
     //TODO сделать интеграцию с календарем(как источником даных) : синхронизировать тренировки
     //TODO сделать раздел хэлпа с инструкцией(и раскидать иконки вызова ? по активити и фрагментам)
     //TODO
 
-    private static String fragmentContext;
     FloatingActionButton floatingActionButton;
+    ImageView backgroundView;
+    private static String fragmentContext = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +53,12 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        backgroundView = (ImageView) findViewById(R.id.backgroundView);
+
+        //настройка плавающей кнопки
         floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
-        //плавающая кнопка
+        floatingActionButton.setImageResource(R.drawable.ic_help_outline_white_24dp);
+        floatingActionButton.setScaleType(ImageView.ScaleType.CENTER);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,33 +68,17 @@ public class MainActivity extends AppCompatActivity
                     case WorkoutFragment.FRAGMENT_TAG:
                         Snackbar.make(view, "Это фрагмент для тренировок", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
-                        //Поиск нужного фрагмента
-                        Fragment fragment = getFragmentManager()
-                                .findFragmentById(R.id.nav_drawer_content_frame);
-                        //запуск и остановка таймера в тренировке
-                        Chronometer timer = ((Chronometer) fragment.getView().findViewById(R.id.chronometer));
-                        if (!WorkoutFragment.workoutIsStarted) {
-//TODO сделать смену иконки на кнопке
-//                            ((Chronometer) fragment.getView().findViewById(R.id.chronometer)).start();
-                            timer.start();
-                            WorkoutFragment.workoutIsStarted = true;
-                        } else {
-//                            ((Chronometer) fragment.getView().findViewById(R.id.chronometer)).stop();
-                        timer.stop();
-                            WorkoutFragment.workoutIsStarted = false;
-                        }
-
+                        startWorkout(view);//запуск таймера
                         break;
                     case DietFragment.FRAGMENT_TAG:
                         Snackbar.make(view, "Это фрагмент для диеты", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                         break;
-
+                    default:
+                        break;
                 }
-
             }
         });
-
         //Панель навигации(выдвигается слева)
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -97,6 +88,23 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void startWorkout(View view) {
+        //Поиск нужного фрагмента
+        Fragment fragment = getFragmentManager()
+                .findFragmentById(R.id.nav_drawer_content_frame);
+
+        //запуск и остановка таймера в тренировке
+        Chronometer timer = ((Chronometer) fragment.getView().findViewById(R.id.chronometer));
+
+        if (!WorkoutFragment.workoutIsStarted) {
+            timer.start();
+            WorkoutFragment.workoutIsStarted = true;
+        } else {
+            timer.stop();
+            WorkoutFragment.workoutIsStarted = false;
+        }
     }
 
     @Override
@@ -137,6 +145,9 @@ public class MainActivity extends AppCompatActivity
                 //отображается диалог с выбором тренировки
                 DialogFragment dialog = new WorkoutListDialog();
                 dialog.show(getFragmentManager(), "workoutsList");
+                //подстройка фона и плавающих кнопок под контекст выбраного фрагмента
+                floatingActionButton.setImageResource(R.drawable.ic_alarm_white_24dp);
+                backgroundView.setImageResource(R.drawable.gym2_cut);
                 fragmentContext = WorkoutFragment.FRAGMENT_TAG;//идентификация фрагмента
                 break;
             case R.id.drawer_menu_diet:
@@ -144,6 +155,12 @@ public class MainActivity extends AppCompatActivity
                 getFragmentManager().beginTransaction()
                         .replace(R.id.nav_drawer_content_frame, dietFragment).commit();
                 fragmentContext = DietFragment.FRAGMENT_TAG;
+                break;
+            case R.id.drawer_menu_pharm:
+                PharmFragment pharmFragment = new PharmFragment();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.nav_drawer_content_frame, pharmFragment).commit();
+                fragmentContext = null;
                 break;
             case R.id.drawer_menu_photo:
                 PhotoFragment photoFragment = new PhotoFragment();
@@ -173,28 +190,9 @@ public class MainActivity extends AppCompatActivity
         }
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayout.closeDrawer(GravityCompat.START);
-
         return true;
     }
 
-    private void startWorkout() {
-//создается асинхроный процесс для загрузки тренировок из бд вне основного потока приложения
-//        LoadWorkouts asyncTask = new LoadWorkouts();
-//        asyncTask.asyncResponse = this;//задается слушатель интерфейса для получения данных из асинтаска
-//        asyncTask.execute(this);
-//        WorkoutListDialog workoutListDialog = new WorkoutListDialog();
-//        FragmentTransaction fragmentTransaction;
-//        EditExerciseDialog editExerciseDialog;
-//
-//        workoutListDialog.setTargetFragment(this, 300);
-//        fragmentTransaction = getFragmentManager().beginTransaction();
-//        workoutListDialog.show(fragmentTransaction, "dialog");
-//
-//        WorkoutFragment workoutFragment = new WorkoutFragment();
-//                getFragmentManager().beginTransaction()
-//                        .replace(R.id.nav_drawer_content_frame, workoutFragment).commit();
-
-    }
 
     @Override
     public void processFinished(ArrayList<HashMap<String, String>> output) {

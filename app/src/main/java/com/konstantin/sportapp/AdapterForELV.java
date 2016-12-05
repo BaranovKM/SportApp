@@ -74,6 +74,8 @@ public class AdapterForELV extends BaseExpandableListAdapter {
         TextView textView = (TextView) convertView.findViewById(android.R.id.text1);
         textView.setTypeface(null, Typeface.BOLD);
         textView.setText(headerTitle);
+        textView.setTextSize(30);
+
         return convertView;
     }
 
@@ -87,6 +89,7 @@ public class AdapterForELV extends BaseExpandableListAdapter {
         }
         TextView textView = (TextView) convertView.findViewById(android.R.id.text1);
         textView.setText(childText);
+        textView.setTextSize(24);
         return convertView;
     }
 
@@ -100,4 +103,5 @@ public class AdapterForELV extends BaseExpandableListAdapter {
 
 //        return this.listDataChild.get(this.listDataHeader.get(groupPosition)).get(childPosition);
     }
+
 }

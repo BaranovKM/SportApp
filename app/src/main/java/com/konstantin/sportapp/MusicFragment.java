@@ -24,7 +24,7 @@ public class MusicFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //        return super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.music,container,false);
+        View view = inflater.inflate(R.layout.cap,container,false);
 return  view;
     }
 }

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Chronometer;
 import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,8 +78,6 @@ public class WorkoutFragment extends Fragment {
             //затем количество подходов
             int rowsQuantity = cursor.getInt(cursor.getColumnIndex(DBHelper.ROWS_IN_WORKOUT));
             //и количество повторений в каждом подходе
-//            String iterations = Integer.toString(
-//                    cursor.getInt(cursor.getColumnIndex(DBHelper.ITERATIONS_IN_ROW)));
             int iterations = cursor.getInt(cursor.getColumnIndex(DBHelper.ITERATIONS_IN_ROW));
 
             rows = new ArrayList<>();
@@ -103,37 +103,47 @@ public class WorkoutFragment extends Fragment {
         ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setMax(progressBarSize);
 
-        //вставка обработанных данныых из курсора в адаптер, который создат отображаемый список упражнений
+        //настройка лист-вью с упражнениями
         ExpandableListView expandableListView = (ExpandableListView) view.findViewById(R.id.expandableListView2);
         AdapterForELV adapterForELV = new AdapterForELV(getContext(), listDataHeader, listDataChild);
         expandableListView.setAdapter(adapterForELV);
+
         //обработка клика по строке с подходом
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int group, int child, long id) {
                 Log.d("TEST_LISTVIEW", "Нажат пункт : " + child + " в группе :" + group + " row id =" + id);
+
                 //удаление пункта из списка
                 ((AdapterForELV) expandableListView.getExpandableListAdapter()).removeChild(group, child);
                 ((AdapterForELV) expandableListView.getExpandableListAdapter()).notifyDataSetChanged();
 
+                //зачеркивание упражнения, если выполнены все подходы
+                int childCount = ((AdapterForELV) expandableListView.getExpandableListAdapter())
+                        .getChildrenCount(group);
+                if(childCount==0){
+                    Log.d("TEST_LISTVIEW", "Last row in exercise");
+                    View groupView = expandableListView.getChildAt(
+                            expandableListView.getFlatListPosition(
+                                    expandableListView.getPackedPositionForGroup(group)));
+                    TextView textInGroup = (TextView) groupView.findViewById(android.R.id.text1);
+                    textInGroup.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                }
                 //отражение прогреса тренировки на индикаторе
                 View mView = (View) expandableListView.getParent();
                 ProgressBar pbar = (ProgressBar) mView.findViewById(R.id.progressBar);
                 workoutProgress++;
                 pbar.setProgress(workoutProgress);
                 Log.d("TEST_PROGRESSBAR", progressBarSize + " : " + workoutProgress);
+
+                //если сделан последний подход в последнем упражнении, то тренировка заканчивается
                 if (workoutProgress == progressBarSize) {
-//                    String workoutTime = ((View) expandableListView.getParent()).findViewById(R.id.);
                     //Вычисление времени тренировки
                 long elapsedTime = SystemClock.elapsedRealtime() - ((Chronometer)getFragmentManager().findFragmentById(R.id.nav_drawer_content_frame)
                             .getView().findViewById(R.id.chronometer)).getBase();
                     int minute = (int) elapsedTime/60000;
                     int second = (int) (elapsedTime - minute*60000)/1000;
                     String workoutTime = minute + " : "+ second;
-//                    String workoutTime = Long.toString(elapsedTime/1000)+" секунд";
-//                    String workout = "Отжимания";
-//                    int iterations = 100;
-//                    workoutStop(workout,iterations);
                     workoutStop(workoutResultList, workoutTime);
                 }
                 return true;
@@ -166,9 +176,5 @@ public class WorkoutFragment extends Fragment {
             }
         });
         builder.show();
-    }
-
-    private void adaptFloatingButtom() {
-
     }
 }

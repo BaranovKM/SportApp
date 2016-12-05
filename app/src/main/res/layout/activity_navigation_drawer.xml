@@ -7,7 +7,14 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
+    <!--android:background="@drawable/dimatize_cut"-->
     <!-- The main content view -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/dimatize_cut"
+        android:scaleType="fitXY"
+        android:id="@+id/backgroundView" />
     <include
         layout="@layout/app_bar_navigation_drawer"
         android:layout_width="match_parent"
@@ -19,7 +26,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="50dp"
-        />
+        >
+
+
+    </FrameLayout>
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"

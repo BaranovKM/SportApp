@@ -4,12 +4,16 @@
 <group android:checkableBehavior="single">
     <item
         android:id="@+id/drawer_menu_workouts"
-        android:icon="@drawable/ic_menu_gallery"
+        android:icon="@drawable/ic_fitness_center_white_24dp"
         android:title="Тренировки" />
     <item
         android:id="@+id/drawer_menu_diet"
-        android:icon="@drawable/ic_menu_slideshow"
-        android:title="Диета и фармакология" />
+        android:icon="@drawable/ic_local_dining_white_24dp"
+        android:title="Питание" />
+    <item
+        android:id="@+id/drawer_menu_pharm"
+        android:icon="@drawable/ic_local_pharmacy_white_24dp"
+        android:title="Фармакология" />
 
     <item
         android:id="@+id/drawer_menu_photo"
@@ -17,11 +21,11 @@
         android:title="Фотки себя любимого" />
     <item
         android:id="@+id/drawer_menu_music"
-        android:icon="@drawable/ic_menu_camera"
+        android:icon="@drawable/ic_library_music_white_24dp"
         android:title="Музыка и аудиокнижки" />
     <item
         android:id="@+id/drawer_menu_statistic"
-        android:icon="@drawable/ic_menu_camera"
+        android:icon="@drawable/ic_timeline_white_24dp"
         android:title="Статистика по тренировкам" />
 </group>
 
@@ -29,12 +33,12 @@
     <menu>
         <item
             android:id="@+id/drawer_menu_editor"
-            android:icon="@drawable/ic_menu_share"
-            android:title="Редактор тренировок и упражнений" />
+            android:icon="@drawable/ic_settings_white_24dp"
+            android:title="Редактор тренировок" />
         <item
             android:id="@+id/drawer_menu_help"
-            android:icon="@drawable/ic_menu_send"
-            android:title="Хэлп" />
+            android:icon="@drawable/ic_menu_share"
+            android:title="Настройки приложения" />
     </menu>
 </item>
 
